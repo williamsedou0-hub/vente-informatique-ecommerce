@@ -1,37 +1,39 @@
-import { createContext, useState, useContext, type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
+import { AuthContext } from "./authContextDefinition";
+import type { AuthUser } from "../types/auth";
 
-interface User {
-  id: string;
-  name: string;
-  email: string;
-  role: "user" | "admin";
+const USER_STORAGE_KEY = "user";
+
+function getStoredUser(): AuthUser | null {
+  const storedUser = localStorage.getItem(USER_STORAGE_KEY);
+  if (!storedUser) return null;
+
+  try {
+    return JSON.parse(storedUser) as AuthUser;
+  } catch {
+    localStorage.removeItem(USER_STORAGE_KEY);
+    return null;
+  }
 }
-
-interface AuthContextType {
-  user: User | null;
-  token: string | null;
-  login: (user: User, token: string) => void;
-  logout: () => void;
-}
-
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  const [user, setUser] = useState<User | null>(null);
+  const [user, setUser] = useState<AuthUser | null>(getStoredUser);
   const [token, setToken] = useState<string | null>(
     localStorage.getItem("token")
   );
 
-  const login = (userData: User, userToken: string) => {
+  const login = (userData: AuthUser, userToken: string) => {
     setUser(userData);
     setToken(userToken);
     localStorage.setItem("token", userToken);
+    localStorage.setItem(USER_STORAGE_KEY, JSON.stringify(userData));
   };
 
   const logout = () => {
     setUser(null);
     setToken(null);
     localStorage.removeItem("token");
+    localStorage.removeItem(USER_STORAGE_KEY);
   };
 
   return (
@@ -39,12 +41,4 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       {children}
     </AuthContext.Provider>
   );
-}
-
-export function useAuthContext() {
-  const context = useContext(AuthContext);
-  if (!context) {
-    throw new Error("useAuthContext doit être utilisé dans un AuthProvider");
-  }
-  return context;
 }

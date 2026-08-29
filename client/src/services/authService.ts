@@ -1,4 +1,6 @@
-const API_URL = "http://localhost:5000/api/auth";
+import type { AuthUser } from "../types/auth";
+
+const API_URL = import.meta.env.VITE_API_URL ?? "http://localhost:5000/api/auth";
 
 interface RegisterData {
   name: string;
@@ -12,13 +14,21 @@ interface LoginData {
 }
 
 interface AuthResponse {
-  user: {
-    id: string;
-    name: string;
-    email: string;
-    role: "user" | "admin";
-  };
+  user: AuthUser;
   token: string;
+}
+
+async function getErrorMessage(response: Response, fallback: string): Promise<string> {
+  const contentType = response.headers.get("content-type") ?? "";
+
+  if (contentType.includes("application/json")) {
+    const data: unknown = await response.json();
+    if (typeof data === "object" && data !== null && "message" in data && typeof data.message === "string") {
+      return data.message;
+    }
+  }
+
+  return fallback;
 }
 
 export async function registerUser(data: RegisterData): Promise<AuthResponse> {
@@ -29,8 +39,7 @@ export async function registerUser(data: RegisterData): Promise<AuthResponse> {
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || "Erreur lors de l'inscription");
+    throw new Error(await getErrorMessage(response, "Erreur lors de l'inscription"));
   }
 
   return response.json();
@@ -44,8 +53,7 @@ export async function loginUser(data: LoginData): Promise<AuthResponse> {
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
-    throw new Error(errorData.message || "Erreur lors de la connexion");
+    throw new Error(await getErrorMessage(response, "Erreur lors de la connexion"));
   }
 
   return response.json();

@@ -1,4 +1,5 @@
 import { useState, type FormEvent } from "react";
+import { Link } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 export default function Login() {
@@ -48,6 +49,10 @@ export default function Login() {
           {loading ? "Connexion en cours..." : "Se connecter"}
         </button>
       </form>
+
+      <p>
+        Vous n'avez pas de compte ? <Link to="/register">Créer un compte</Link>
+      </p>
     </div>
   );
 }
