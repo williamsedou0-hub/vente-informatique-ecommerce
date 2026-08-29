@@ -14,57 +14,76 @@ export default function Register() {
   }
 
   if (isAuthenticated) {
-    return <p>Vous êtes déjà connecté(e) !</p>;
+    return (
+      <main className="auth-page auth-page--register">
+        <section className="auth-card auth-card--message">
+          <p className="auth-eyebrow">Session active</p>
+          <h1>Vous êtes déjà connecté(e).</h1>
+          <p className="auth-subtitle">Vous pouvez maintenant retourner sur la plateforme.</p>
+        </section>
+      </main>
+    );
   }
 
   return (
-    <div className="register-page">
-      <h1>Inscription</h1>
+    <main className="auth-page auth-page--register">
+      <section className="auth-card" aria-labelledby="register-title">
+        <Link className="auth-brand" to="/">NOVA<span>TECH</span></Link>
+        <p className="auth-eyebrow">Commencez votre expérience</p>
+        <h1 id="register-title">Créer un compte</h1>
+        <p className="auth-subtitle">Rejoignez NovaTech et trouvez le matériel qu'il vous faut.</p>
 
-      <form onSubmit={handleSubmit}>
-        <div>
+        <form className="auth-form" onSubmit={handleSubmit}>
+          <div className="auth-field">
           <label htmlFor="name">Nom</label>
           <input
             id="name"
             type="text"
+            placeholder="Votre nom complet"
+            autoComplete="name"
             value={name}
             onChange={(e) => setName(e.target.value)}
             required
           />
         </div>
 
-        <div>
+          <div className="auth-field">
           <label htmlFor="email">Email</label>
           <input
             id="email"
             type="email"
+            placeholder="nom@exemple.com"
+            autoComplete="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
           />
         </div>
 
-        <div>
+          <div className="auth-field">
           <label htmlFor="password">Mot de passe</label>
           <input
             id="password"
             type="password"
+            placeholder="Au moins 6 caractères"
+            autoComplete="new-password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
           />
         </div>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
+          {error && <p className="auth-error" role="alert">{error}</p>}
 
-        <button type="submit" disabled={loading}>
-          {loading ? "Inscription en cours..." : "S'inscrire"}
-        </button>
-      </form>
+          <button className="auth-submit" type="submit" disabled={loading}>
+            {loading ? "Création en cours..." : "Créer mon compte"}
+          </button>
+        </form>
 
-      <p>
-        Vous avez déjà un compte ? <Link to="/login">Se connecter</Link>
-      </p>
-    </div>
+        <p className="auth-switch">
+          Vous avez déjà un compte ? <Link to="/login">Se connecter</Link>
+        </p>
+      </section>
+    </main>
   );
 }
