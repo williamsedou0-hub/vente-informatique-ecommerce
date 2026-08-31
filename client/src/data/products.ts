@@ -1,0 +1,68 @@
+import type { Product } from "../types/cart";
+
+export const DEMO_PRODUCTS: (Product & { description: string })[] = [
+  {
+    id: "p1",
+    name: "Clavier mécanique RGB",
+    price: 45000,
+    image: "https://loremflickr.com/500/500/mechanical,keyboard",
+    stock: 12,
+    description: "Clavier mécanique rétroéclairé RGB, switches réactifs, idéal pour la bureautique comme pour le gaming. Câble USB-C amovible, repose-poignet inclus.",
+  },
+  {
+    id: "p2",
+    name: "Souris gaming sans fil",
+    price: 18000,
+    image: "https://loremflickr.com/500/500/wireless,mouse,computer",
+    stock: 20,
+    description: "Souris sans fil haute précision, capteur optique 16000 DPI, autonomie jusqu'à 70h. Compatible Windows et Mac.",
+  },
+  {
+    id: "p3",
+    name: "SSD NVMe 1To",
+    price: 52000,
+    image: "https://loremflickr.com/500/500/ssd,harddrive",
+    stock: 8,
+    description: "Disque SSD interne NVMe 1To, vitesse de lecture jusqu'à 3500 Mo/s. Idéal pour accélérer le démarrage et le chargement des applications.",
+  },
+  {
+    id: "p4",
+    name: "Écran 24 pouces Full HD",
+    price: 95000,
+    image: "https://loremflickr.com/500/500/computer,monitor",
+    stock: 5,
+    description: "Moniteur 24 pouces Full HD 1920x1080, dalle IPS, taux de rafraîchissement 75Hz. Ports HDMI et VGA inclus.",
+  },
+  {
+    id: "p5",
+    name: "Casque audio filaire",
+    price: 22000,
+    image: "https://loremflickr.com/500/500/headphones,computer",
+    stock: 15,
+    description: "Casque filaire avec microphone intégré, son stéréo immersif, coussinets confortables pour un usage prolongé.",
+  },
+  {
+    id: "p6",
+    name: "Webcam Full HD 1080p",
+    price: 27000,
+    image: "https://loremflickr.com/500/500/webcam",
+    stock: 10,
+    description: "Webcam Full HD 1080p avec micro intégré, autofocus, idéale pour les visioconférences et le télétravail.",
+  },
+  {
+    id: "p7",
+    name: "Disque dur externe 2To",
+    price: 61000,
+    image: "https://loremflickr.com/500/500/externalharddrive",
+    stock: 7,
+    description: "Disque dur externe 2To, connexion USB 3.0, compact et silencieux, compatible PC et Mac.",
+  },
+  {
+    id: "p8",
+    name: "Hub USB-C 7 ports",
+    price: 15000,
+    image: "https://loremflickr.com/500/500/usbhub",
+    stock: 25,
+    description: "Hub USB-C 7 en 1 : ports USB 3.0, HDMI, lecteur de carte SD/TF, idéal pour étendre la connectique de votre laptop.",
+  },
+];

@@ -1,0 +1,78 @@
+:root {
+  --accent: #ff2d55;
+  --accent-dark: #d81b45;
+  --accent-soft: #ffe5ec;
+  --ink: #1a1a1a;
+}
+
+.confirmation-page {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 3rem 1rem;
+  text-align: center;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+.confirmation-page h1 {
+  font-weight: 800;
+  letter-spacing: -0.02em;
+}
+
+.confirmation-icon {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #fff;
+  font-size: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto 1rem;
+  box-shadow: 0 6px 16px rgba(255, 45, 85, 0.35);
+}
+
+.confirmation-details {
+  text-align: left;
+  background: var(--accent-soft);
+  border-radius: 14px;
+  padding: 1.5rem;
+  margin: 2rem 0;
+}
+
+.confirmation-details h2 {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--accent-dark);
+  font-weight: 800;
+}
+
+.confirmation-details ul {
+  list-style: none;
+  padding: 0;
+  margin: 0.75rem 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.confirmation-details li {
+  display: flex;
+  justify-content: space-between;
+}
+
+.confirmation-total {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1.5px solid rgba(216, 27, 69, 0.25);
+  padding-top: 0.75rem;
+  margin-bottom: 1rem;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.confirmation-total strong {
+  color: var(--accent);
+}
