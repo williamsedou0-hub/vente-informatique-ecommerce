@@ -32,11 +32,16 @@ async function getErrorMessage(response: Response, fallback: string): Promise<st
 }
 
 export async function registerUser(data: RegisterData): Promise<AuthResponse> {
-  const response = await fetch(`${API_URL}/register`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${API_URL}/register`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+  } catch {
+    throw new Error("Impossible de joindre le serveur. Démarrez l'API avec npm run dev dans le dossier server.");
+  }
 
   if (!response.ok) {
     throw new Error(await getErrorMessage(response, "Erreur lors de l'inscription"));
@@ -46,11 +51,16 @@ export async function registerUser(data: RegisterData): Promise<AuthResponse> {
 }
 
 export async function loginUser(data: LoginData): Promise<AuthResponse> {
-  const response = await fetch(`${API_URL}/login`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(data),
-  });
+  let response: Response;
+  try {
+    response = await fetch(`${API_URL}/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
+  } catch {
+    throw new Error("Impossible de joindre le serveur. Démarrez l'API avec npm run dev dans le dossier server.");
+  }
 
   if (!response.ok) {
     throw new Error(await getErrorMessage(response, "Erreur lors de la connexion"));

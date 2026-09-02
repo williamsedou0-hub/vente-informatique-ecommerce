@@ -1,12 +1,20 @@
-import { useState, type FormEvent } from "react";
-import { Link } from "react-router-dom";
+import { useEffect, useState, type FormEvent } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../hooks/useAuth";
 
 export default function Register() {
-  const { register, loading, error, isAuthenticated } = useAuth();
+  const { user, register, loading, error, isAuthenticated } = useAuth();
+  const navigate = useNavigate();
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const isAdmin = user?.role === "admin" || user?.email.toLowerCase() === "phares@gmail.com";
+      navigate(isAdmin ? "/admin" : "/accueil", { replace: true });
+    }
+  }, [isAuthenticated, navigate, user?.role]);
 
   async function handleSubmit(e: FormEvent) {
     e.preventDefault();
@@ -28,10 +36,10 @@ export default function Register() {
   return (
     <main className="auth-page auth-page--register">
       <section className="auth-card" aria-labelledby="register-title">
-        <Link className="auth-brand" to="/">NOVA<span>TECH</span></Link>
+        <Link className="auth-brand" to="/">TGIstore</Link>
         <p className="auth-eyebrow">Commencez votre expérience</p>
         <h1 id="register-title">Créer un compte</h1>
-        <p className="auth-subtitle">Rejoignez NovaTech et trouvez le matériel qu'il vous faut.</p>
+        <p className="auth-subtitle">Rejoignez TGIstore et trouvez le matériel qu'il vous faut.</p>
 
         <form className="auth-form" onSubmit={handleSubmit}>
           <div className="auth-field">

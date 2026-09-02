@@ -3,6 +3,8 @@ import jwt from "jsonwebtoken";
 import User from "../models/User";
 import type { AuthRequest } from "../middleware/authMiddleware";
 
+const ADMIN_EMAIL = "phares@gmail.com";
+
 function generateToken(userId: string): string {
   const secret = process.env.JWT_SECRET;
   if (!secret) {
@@ -47,7 +49,12 @@ export async function register(req: Request, res: Response) {
       return res.status(400).json({ message: "Cet email est déjà utilisé" });
     }
 
-    const user = await User.create({ name: name.trim(), email: normalizedEmail, password });
+    const user = await User.create({
+      name: name.trim(),
+      email: normalizedEmail,
+      password,
+      role: normalizedEmail === ADMIN_EMAIL ? "admin" : "user",
+    });
     const token = generateToken(user.id);
 
     res.status(201).json({
@@ -79,6 +86,11 @@ export async function login(req: Request, res: Response) {
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
       return res.status(401).json({ message: "Email ou mot de passe incorrect" });
+    }
+
+    if (user.email === ADMIN_EMAIL && user.role !== "admin") {
+      user.role = "admin";
+      await user.save();
     }
 
     const token = generateToken(user.id);
