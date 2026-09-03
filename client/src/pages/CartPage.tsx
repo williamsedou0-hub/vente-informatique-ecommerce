@@ -37,35 +37,90 @@ export default function CartPage() {
 
   return (
     <div className="cart-page">
-      <div className="shop-header">
-        <span className="shop-header__logo">TechStore</span>
-        <span className="shop-header__delivery">📍 Livraison à Dakar</span>
-        <span className="shop-header__secure">🔒 Paiement fiable</span>
-      </div>
+      <h1>Panier</h1>
 
       <div className="cart-steps">
         {STEPS.map((step, i) => (
           <span key={step} className={i === 0 ? "cart-steps__active" : ""}>
+            <span
+              style={{
+                width: 28,
+                height: 28,
+                borderRadius: "50%",
+                background: i === 0 ? "linear-gradient(90deg,#3b9dff,#22d3ee)" : "#151d35",
+                border: "1px solid #232c47",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: "0.8rem",
+                color: i === 0 ? "#fff" : "#8b95b3",
+              }}
+            >
+              {i + 1}
+            </span>
             {step}
-            {i < STEPS.length - 1 && <span className="cart-steps__sep">›</span>}
+            {i < STEPS.length - 1 && <span className="cart-steps__sep"></span>}
           </span>
         ))}
       </div>
 
       {items.length === 0 ? (
-        <div className="cart-empty">
-          <svg className="cart-empty__svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M8 10h6l6 32h30l6-22H18" stroke="#1a1a1a" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-            <circle cx="24" cy="52" r="3" stroke="#1a1a1a" strokeWidth="2" />
-            <circle cx="42" cy="52" r="3" stroke="#1a1a1a" strokeWidth="2" />
-          </svg>
+        <div className="cart-empty-layout">
+          <div className="cart-empty">
+            <svg className="cart-empty__svg" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M8 10h6l6 32h30l6-22H18" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+              <circle cx="24" cy="52" r="3" strokeWidth="2" />
+              <circle cx="42" cy="52" r="3" strokeWidth="2" />
+            </svg>
 
-          <h2>VOTRE PANIER EST VIDE</h2>
-          <p>Ajoutez des articles pour commencer vos achats.</p>
+            <h2>VOTRE PANIER EST VIDE</h2>
+            <p>Ajoutez des articles pour commencer vos achats.</p>
 
-          <div className="cart-empty__actions">
-            <button type="button" className="cart-empty__btn cart-empty__btn--dark">Se connecter</button>
-            <a href="#suggestions" className="cart-empty__btn cart-empty__btn--outline">Voir les articles</a>
+            <div className="cart-empty__actions">
+              <button type="button" className="cart-empty__btn cart-empty__btn--dark">Se connecter</button>
+              <a href="#suggestions" className="cart-empty__btn cart-empty__btn--outline">Voir les articles</a>
+            </div>
+          </div>
+
+          <div className="side-panels">
+            <div className="why-panel">
+              <h3>Pourquoi acheter chez TechStore ?</h3>
+              <div className="why-item">
+                <span className="why-item__icon">🛡</span>
+                <div>
+                  <p className="why-item__title">Produits de qualité</p>
+                  <p className="why-item__desc">Des outils performants et durables</p>
+                </div>
+              </div>
+              <div className="why-item">
+                <span className="why-item__icon">🏷</span>
+                <div>
+                  <p className="why-item__title">Prix compétitifs</p>
+                  <p className="why-item__desc">Les meilleurs prix du marché</p>
+                </div>
+              </div>
+              <div className="why-item">
+                <span className="why-item__icon">🚚</span>
+                <div>
+                  <p className="why-item__title">Livraison rapide à Dakar</p>
+                  <p className="why-item__desc">Livraison offerte dès 50 000 FCFA</p>
+                </div>
+              </div>
+              <div className="why-item">
+                <span className="why-item__icon">🔒</span>
+                <div>
+                  <p className="why-item__title">Paiement sécurisé</p>
+                  <p className="why-item__desc">Transactions 100% sécurisées</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="help-panel">
+              <span className="help-panel__icon">🎧</span>
+              <p className="help-panel__title">Besoin d'aide ?</p>
+              <p className="help-panel__desc">Notre équipe est là pour vous accompagner.</p>
+              <button className="help-panel__btn">Nous contacter</button>
+            </div>
           </div>
         </div>
       ) : (
@@ -111,11 +166,27 @@ export default function CartPage() {
               <span>Sous-total</span>
               <span>{selectedTotal.toLocaleString()} FCFA</span>
             </div>
-            <p className="cart-summary-card__note">(Prix TTC)</p>
-            <button className="btn btn-primary cart-summary-card__cta" onClick={() => navigate("/checkout")} disabled={selectedCount === 0}>
+            <div className="cart-summary-card__row">
+              <span>Livraison</span>
+              <span>Offerte</span>
+            </div>
+            <div className="cart-summary-card__row cart-summary-card__row--total">
+              <span>Total</span>
+              <strong>{selectedTotal.toLocaleString()} FCFA</strong>
+            </div>
+
+            <button
+              className="btn btn-primary cart-summary-card__cta"
+              onClick={() => navigate("/checkout")}
+              disabled={selectedCount === 0}
+            >
               Passer au paiement ({selectedCount})
             </button>
-            <p className="cart-summary-card__coupon-note">Appliquez un code promo à l'étape suivante.</p>
+
+            <p className="cart-summary-card__coupon-note">
+              Appliquez un code promo à l'étape suivante.
+            </p>
+
             <div className="cart-summary-card__payments">
               <p>Nous acceptons</p>
               <div className="payment-badges">

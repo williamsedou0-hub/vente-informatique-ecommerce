@@ -1,25 +1,25 @@
 import { type FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../context/CartContext";
-import { createOrder } from "../services/orderService";
+import { createCheckoutSession } from "../services/paymentService";
 import type { ShippingInfo } from "../types/cart";
 import "./CheckoutPage.css";
 
 const EMPTY_SHIPPING: ShippingInfo = {
   fullName: "",
-  email: "",
   phone: "",
   address: "",
   city: "",
   postalCode: "",
 };
 
+const PENDING_ORDER_KEY = "techstore_pending_order";
+
 export default function CheckoutPage() {
-  const { items, totalPrice, clearCart } = useCart();
+  const { items, totalPrice } = useCart();
   const navigate = useNavigate();
 
   const [shipping, setShipping] = useState<ShippingInfo>(EMPTY_SHIPPING);
-  const [paymentMethod, setPaymentMethod] = useState<"card" | "paypal">("card");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -38,12 +38,17 @@ export default function CheckoutPage() {
 
     setIsSubmitting(true);
     try {
-      const order = await createOrder(items, shipping);
-      clearCart();
-      navigate("/confirmation", { state: { order } });
+      // On sauvegarde les infos de commande AVANT de partir sur Stripe,
+      // pour pouvoir créer la commande au retour une fois le paiement confirmé.
+      sessionStorage.setItem(
+        PENDING_ORDER_KEY,
+        JSON.stringify({ items, shipping })
+      );
+
+      const url = await createCheckoutSession(items);
+      window.location.href = url; // redirection vers la vraie page Stripe
     } catch (err) {
-      setError("Une erreur est survenue lors de la commande. Réessayez.");
-    } finally {
+      setError("Une erreur est survenue lors de la connexion au paiement. Réessayez.");
       setIsSubmitting(false);
     }
   }
@@ -53,64 +58,8 @@ export default function CheckoutPage() {
       <h1>Finaliser la commande</h1>
 
       <div className="checkout-layout">
-        <form className="checkout-form" onSubmit={handleSubmit}>
-          <h2>Adresse de livraison</h2>
-
-          <label>
-            Nom complet
-            <input required value={shipping.fullName} onChange={(e) => handleChange("fullName", e.target.value)} />
-          </label>
-
-          <label>
-            Email
-            <input required type="email" value={shipping.email} onChange={(e) => handleChange("email", e.target.value)} />
-          </label>
-
-          <label>
-            Téléphone
-            <input required value={shipping.phone} onChange={(e) => handleChange("phone", e.target.value)} />
-          </label>
-
-          <label>
-            Adresse
-            <input required value={shipping.address} onChange={(e) => handleChange("address", e.target.value)} />
-          </label>
-
-          <div className="checkout-form__row">
-            <label>
-              Ville
-              <input required value={shipping.city} onChange={(e) => handleChange("city", e.target.value)} />
-            </label>
-            <label>
-              Code postal
-              <input required value={shipping.postalCode} onChange={(e) => handleChange("postalCode", e.target.value)} />
-            </label>
-          </div>
-
-          <h2>Paiement</h2>
-          <div className="checkout-form__payment">
-            <label>
-              <input type="radio" name="payment" checked={paymentMethod === "card"} onChange={() => setPaymentMethod("card")} />
-              Carte bancaire
-            </label>
-            <label>
-              <input type="radio" name="payment" checked={paymentMethod === "paypal"} onChange={() => setPaymentMethod("paypal")} />
-              PayPal
-            </label>
-          </div>
-          <p className="checkout-form__payment-note">
-            Simulation de paiement — aucun montant réel n'est débité pour le moment.
-          </p>
-
-          {error && <p className="checkout-form__error">{error}</p>}
-
-          <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
-            {isSubmitting ? "Traitement en cours..." : "Confirmer la commande"}
-          </button>
-        </form>
-
         <aside className="checkout-summary">
-          <h2>Récapitulatif</h2>
+          <h2>Récapitulatif de la commande</h2>
           <ul>
             {items.map((item) => (
               <li key={item.product.id}>
@@ -124,6 +73,46 @@ export default function CheckoutPage() {
             <strong>{totalPrice.toLocaleString()} FCFA</strong>
           </div>
         </aside>
+
+        <form className="checkout-form" onSubmit={handleSubmit}>
+          <h2>Adresse de livraison</h2>
+
+          <label>
+            Nom complet
+            <input required value={shipping.fullName} onChange={(e) => handleChange("fullName", e.target.value)} disabled={isSubmitting} />
+          </label>
+
+          <label>
+            Téléphone
+            <input required value={shipping.phone} onChange={(e) => handleChange("phone", e.target.value)} disabled={isSubmitting} />
+          </label>
+
+          <label>
+            Adresse
+            <input required value={shipping.address} onChange={(e) => handleChange("address", e.target.value)} disabled={isSubmitting} />
+          </label>
+
+          <div className="checkout-form__row">
+            <label>
+              Ville
+              <input required value={shipping.city} onChange={(e) => handleChange("city", e.target.value)} disabled={isSubmitting} />
+            </label>
+            <label>
+              Code postal
+              <input required value={shipping.postalCode} onChange={(e) => handleChange("postalCode", e.target.value)} disabled={isSubmitting} />
+            </label>
+          </div>
+
+          <p className="checkout-form__payment-note">
+            🔒 Vous allez être redirigé vers Stripe (paiement sécurisé, mode test).
+          </p>
+
+          {error && <p className="checkout-form__error">{error}</p>}
+
+          <button type="submit" className="btn btn-primary" disabled={isSubmitting}>
+            {isSubmitting ? "Redirection en cours..." : "Payer avec Stripe"}
+          </button>
+        </form>
       </div>
     </div>
   );
