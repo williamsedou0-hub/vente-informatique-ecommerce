@@ -14,6 +14,12 @@ export default function CartPage() {
   const navigate = useNavigate();
   const [selectedProduct, setSelectedProduct] = useState<(Product & { description: string }) | null>(null);
   const [checkedIds, setCheckedIds] = useState<Set<string>>(new Set(items.map((i) => i.product.id)));
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  function showToast(message: string) {
+    setToastMessage(message);
+    setTimeout(() => setToastMessage(null), 2000);
+  }
 
   const cartProductIds = new Set(items.map((item) => item.product.id));
   const suggestions = DEMO_PRODUCTS.filter((p) => !cartProductIds.has(p.id));
@@ -103,7 +109,7 @@ export default function CartPage() {
                 <span className="why-item__icon">🚚</span>
                 <div>
                   <p className="why-item__title">Livraison rapide à Dakar</p>
-                  <p className="why-item__desc">Livraison offerte dès 50 000 FCFA</p>
+                  <p className="why-item__desc">Livraison rapide et sécurisée</p>
                 </div>
               </div>
               <div className="why-item">
@@ -166,10 +172,7 @@ export default function CartPage() {
               <span>Sous-total</span>
               <span>{selectedTotal.toLocaleString()} FCFA</span>
             </div>
-            <div className="cart-summary-card__row">
-              <span>Livraison</span>
-              <span>Offerte</span>
-            </div>
+
             <div className="cart-summary-card__row cart-summary-card__row--total">
               <span>Total</span>
               <strong>{selectedTotal.toLocaleString()} FCFA</strong>
@@ -208,7 +211,15 @@ export default function CartPage() {
                 <img src={product.image} alt={product.name} />
                 <h3>{product.name}</h3>
                 <p className="product-card__price">{product.price.toLocaleString()} FCFA</p>
-                <button className="btn btn-secondary product-card__add" onClick={(e) => { e.stopPropagation(); addToCart(product, 1); setCheckedIds((prev) => new Set(prev).add(product.id)); }}>
+                <button
+                  className="btn btn-secondary product-card__add"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    addToCart(product, 1);
+                    setCheckedIds((prev) => new Set(prev).add(product.id));
+                    showToast("Ajouté avec succès");
+                  }}
+                >
                   Ajouter
                 </button>
               </div>
@@ -217,7 +228,17 @@ export default function CartPage() {
         </section>
       )}
 
-      <ProductModal product={selectedProduct} onClose={() => setSelectedProduct(null)} onAddToCart={(product) => { addToCart(product, 1); setCheckedIds((prev) => new Set(prev).add(product.id)); }} />
+      <ProductModal
+        product={selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+        onAddToCart={(product) => {
+          addToCart(product, 1);
+          setCheckedIds((prev) => new Set(prev).add(product.id));
+          showToast("Ajouté avec succès");
+        }}
+      />
+
+      {toastMessage && <div className="toast-success">{toastMessage}</div>}
     </div>
   );
 }

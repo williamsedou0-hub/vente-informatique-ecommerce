@@ -3,8 +3,8 @@ import "./Header.css";
 export default function Header() {
   return (
     <>
-      <div className="promo-bar">
-        🚚 Livraison offerte dès <strong>50 000 FCFA</strong> d'achat — partout à Dakar
+           <div className="promo-bar">
+        🛡️ Garantie <strong>24 mois</strong> sur tous nos produits informatiques
       </div>
       <header className="site-header">
         <div className="site-header__left">
