@@ -1,0 +1,91 @@
+:root {
+  --bg: #0a0e1a;
+  --bg-panel: #11172a;
+  --bg-panel-2: #151d35;
+  --border: #232c47;
+  --accent: #3b9dff;
+  --accent-2: #22d3ee;
+  --text: #e8ecf7;
+  --text-muted: #8b95b3;
+}
+
+.promo-bar {
+  background: linear-gradient(90deg, #0f2747, #0a1a33);
+  color: var(--text);
+  text-align: center;
+  font-size: 0.8rem;
+  padding: 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+
+.site-header {
+  background: var(--bg);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--border);
+  font-family: "Segoe UI", system-ui, sans-serif;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.site-header__left {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.site-header__logo {
+  font-weight: 800;
+  font-size: 1.2rem;
+}
+
+.site-header__delivery {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+}
+
+.site-header__nav {
+  display: flex;
+  gap: 1.75rem;
+}
+
+.site-header__nav a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.site-header__nav a:hover {
+  color: var(--accent-2);
+}
+
+.site-header__right {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.icon-circle {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.95rem;
+}
+
+.secure-badge {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0.4rem 0.9rem;
+  font-size: 0.78rem;
+  color: var(--accent-2);
+  font-weight: 600;
+}

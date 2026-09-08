@@ -1,0 +1,244 @@
+:root {
+  --accent: #ff2d55;
+  --accent-dark: #d81b45;
+  --accent-soft: #ffe5ec;
+  --ink: #1a1a1a;
+  --muted: #767676;
+  --line: #ececec;
+}
+
+.shop-page {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1rem 4rem;
+  font-family: "Segoe UI", system-ui, sans-serif;
+}
+
+.shop-page h1 {
+  font-size: 1.6rem;
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  margin-bottom: 1.25rem;
+}
+
+.shop-layout {
+  display: grid;
+  grid-template-columns: 2.2fr 1fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+@media (max-width: 800px) {
+  .shop-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Grille produits (réutilisée catalogue + suggestions) */
+.products-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+  gap: 1.1rem;
+}
+
+.product-card {
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 0.9rem;
+  text-align: center;
+  transition: box-shadow 0.15s ease, transform 0.15s ease;
+  cursor: pointer;
+}
+
+.product-card:hover {
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+  transform: translateY(-2px);
+}
+
+.product-card img {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  border-radius: 8px;
+  margin-bottom: 0.6rem;
+}
+
+.product-card h3 {
+  font-size: 0.88rem;
+  font-weight: 600;
+  margin: 0 0 0.35rem;
+  min-height: 2.2em;
+}
+
+.product-card__price {
+  font-weight: 800;
+  color: var(--accent);
+  margin-bottom: 0.6rem;
+  font-size: 0.9rem;
+}
+
+.product-card__add {
+  width: 100%;
+  padding: 0.5rem 0.9rem;
+  font-size: 0.72rem;
+}
+
+/* Panier latéral */
+.shop-cart {
+  background: var(--accent-soft);
+  border-radius: 14px;
+  padding: 1.5rem;
+  position: sticky;
+  top: 1.5rem;
+}
+
+.shop-cart h2 {
+  font-size: 1rem;
+  font-weight: 800;
+  margin: 0 0 1rem;
+}
+
+.shop-cart__empty {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.shop-cart__items {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  max-height: 360px;
+  overflow-y: auto;
+}
+
+.shop-cart-row {
+  display: grid;
+  grid-template-columns: 44px 1fr auto;
+  gap: 0.6rem;
+  align-items: center;
+}
+
+.shop-cart-row img {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.shop-cart-row__name {
+  font-size: 0.8rem;
+  font-weight: 600;
+  margin: 0 0 0.3rem;
+}
+
+.shop-cart-row__right {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 0.3rem;
+}
+
+.shop-cart-row__price {
+  font-size: 0.78rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.shop-cart-row__remove {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.85rem;
+}
+
+.qty-stepper {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid var(--ink);
+  border-radius: 999px;
+  overflow: hidden;
+  width: fit-content;
+}
+
+.qty-stepper--small button {
+  width: 22px;
+  height: 22px;
+  font-size: 0.85rem;
+}
+
+.qty-stepper button {
+  border: none;
+  background: #fff;
+  font-weight: 700;
+  cursor: pointer;
+  line-height: 1;
+}
+
+.qty-stepper span {
+  min-width: 22px;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+
+.shop-cart__total {
+  display: flex;
+  justify-content: space-between;
+  border-top: 1.5px solid rgba(216, 27, 69, 0.25);
+  margin-top: 1rem;
+  padding-top: 0.85rem;
+  font-size: 1.05rem;
+}
+
+.shop-cart__total strong {
+  color: var(--accent);
+  font-size: 1.2rem;
+}
+
+.shop-cart__checkout {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+/* Suggestions */
+.shop-suggestions {
+  margin-top: 3rem;
+}
+
+.shop-suggestions h2 {
+  font-size: 1.2rem;
+  font-weight: 800;
+  margin-bottom: 1.1rem;
+}
+
+/* Boutons réutilisés */
+.btn {
+  display: inline-block;
+  padding: 0.75rem 1.8rem;
+  border-radius: 999px;
+  font-weight: 700;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.btn-primary {
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 6px 16px rgba(255, 45, 85, 0.35);
+}
+
+.btn-primary:hover {
+  background: var(--accent-dark);
+  transform: translateY(-1px);
+}
+
+.btn-secondary {
+  background: #fff;
+  color: var(--ink);
+  border: 1.5px solid var(--ink);
+}
