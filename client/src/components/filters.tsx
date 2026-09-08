@@ -1,7 +1,12 @@
 interface FiltersProps {
   categories: string[];
   brands: string[];
-  selected: { category: string; brand: string };
+  selected: {
+    category: string;
+    brand: string;
+    minPrice: number;
+    maxPrice: number;
+  };
   onChange: (filters: FiltersProps["selected"]) => void;
 }
 
