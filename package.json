@@ -2,9 +2,11 @@
   "name": "vente-informatique-ecommerce",
   "version": "1.0.0",
   "scripts": {
-    "start": "concurrently \"npm run server\" \"npm run client\"",
-    "server": "node server/index.js",
-    "client": "npm run dev --prefix client -- --open"
+    "postinstall": "npm install --prefix client && npm install --prefix server",
+    "dev": "concurrently \"npm run server --prefix server\" \"npm run dev --prefix client -- --host 0.0.0.0\"",
+    "start": "concurrently \"npm run server --prefix server\" \"npm run dev --prefix client -- --host 0.0.0.0\"",
+    "server": "npm run server --prefix server",
+    "client": "npm run dev --prefix client -- --host 0.0.0.0"
   },
   "dependencies": {
     "cors": "^2.8.6",
